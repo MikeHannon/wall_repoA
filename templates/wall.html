@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Welcome {{session['user_name']}}</h1>
+  <form action="/messages" method = "POST">
+    <textarea name="message" rows="8" cols="40"></textarea>
+    <input type="submit" value = "create a message">
+  </form>
+  {% for message in messages %}
+    <h5>Message created by: {{message.name}} on {{message.m_at.strftime("%Y %B %d") }} </h5>
+    <p>{{message.message}}</p>
+    {% for comment in comments %}
+      {% if message['m_id'] == comment['message_id'] %}
+      <p>Comment by: {{comment.name}} on {{comment.created_at.strftime("%Y %B %d") }} </p>
+      <p>{{comment.comment}}</p>
+      {% endif %}
+    {% endfor %}
+    <form action="/comments" method = "POST">
+      <input type="hidden" name = "m_id" value = "{{message['m_id']}}">
+      <textarea name="comment" rows="8" cols="40"></textarea>
+      <input type="submit" value = "create a comment">
+    </form>
+
+  {% endfor %}
+</body>
+</html>
